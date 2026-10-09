@@ -28,15 +28,7 @@ Flujo: `MVC  ->  API (Controllers)  ->  BL (Services)  ->  DAL (Repositories)  -
 2. Revisar la cadena de conexión `DefaultConnection` en `BolsaTrabajo.API/appsettings.json`. Por defecto usa LocalDB:
    `Server=(localdb)\mssqllocaldb;Database=BolsaTrabajoDB;Trusted_Connection=True;TrustServerCertificate=True`
    (si usa una instancia de SQL Server, cambie solo el `Server=`).
-3. Crear la base de datos. La API aplica las migraciones al arrancar, pero también se puede hacer desde
-   **Herramientas > Administrador de paquetes NuGet > Consola del Administrador de paquetes**:
-   - Proyecto de inicio: `BolsaTrabajo.API`
-   - Proyecto predeterminado: `BolsaTrabajo.DAL`
-   - Ejecutar: `Update-Database`
-   (Con la CLI: `dotnet ef database update --project BolsaTrabajo.DAL --startup-project BolsaTrabajo.API`)
-4. Clic derecho sobre la solución > **Configurar proyectos de inicio** > **Varios proyectos de inicio**:
-   `BolsaTrabajo.API` = Iniciar y `BolsaTrabajo.MVC` = Iniciar (la API primero). Usar el perfil **https**.
-5. Presionar **F5**:
+3. Presionar **F5**:
    - API (Swagger): https://localhost:7001/swagger
    - MVC: https://localhost:7002
    La MVC busca la API en `ApiSettings:BaseUrl` (`BolsaTrabajo.MVC/appsettings.json`).
@@ -45,7 +37,7 @@ Si el navegador muestra un aviso del certificado de desarrollo: `dotnet dev-cert
 
 ### Usuarios de demostración
 
-Se crean automáticamente al iniciar la API (solo para pruebas académicas):
+Se crean automáticamente al iniciar la API (solo para pruebas):
 
 | Rol | Correo | Contraseña |
 |---|---|---|
@@ -53,7 +45,7 @@ Se crean automáticamente al iniciar la API (solo para pruebas académicas):
 | Agente | agente@bolsatrabajo.gob.sv | Agente123* |
 | Candidato | candidato@bolsatrabajo.gob.sv | Candidato123* |
 
-También se crean 3 plazas de ejemplo. Nuevos candidatos pueden registrarse desde la MVC (**Registrarse**).
+Nuevos candidatos pueden registrarse desde la MVC (**Registrarse**).
 
 ### Probar la API en Swagger
 
@@ -99,11 +91,3 @@ También se crean 3 plazas de ejemplo. Nuevos candidatos pueden registrarse desd
 
 Ejecutar desde el **Explorador de pruebas** de Visual Studio o con `dotnet test`. Las pruebas pedidas en las indicaciones son:
 
-| Requisito | Prueba |
-|---|---|
-| Crear una plaza válida aumenta el conteo | `PlazasControllerTest.Post_PlazaValida_AumentaElConteoDeRegistros` |
-| Postulación sin usuario autenticado genera error | `PostulacionesControllerTest.Post_SinUsuarioAutenticado_RetornaUnauthorized` y `PostularAsync_SinIdDeCandidato_GeneraError` |
-| Un candidato no puede postularse dos veces | `PostulacionesControllerTest.Post_CandidatoSePostulaDosVecesALaMismaPlaza_RetornaConflict` |
-| Validación de fechas de publicación y cierre | `PlazasControllerTest.ValidarFechas_VerificaPublicacionYCierre`, `Post_FechaCierreAnteriorALaPublicacion_RetornaBadRequestYNoGuarda`, `Post_FechaPublicacionEnElPasado_RetornaBadRequest`, `PlazaDto_FechaCierreInvalida_GeneraErrorDeValidacion` |
-
-Además se prueban plaza cerrada, candidato sin hoja de vida, evaluación por el agente y acceso de un agente ajeno.

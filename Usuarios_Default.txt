@@ -3,3 +3,15 @@ Usuarios default:
 Administrador - admin@bolsatrabajo.gob.sv - Admin123*
 Agente - agente@bolsatrabajo.gob.sv - Agente123*
 Candidato - candidato@bolsatrabajo.gob.sv - Candidato123*
+
+Pruebas a evaluar:
+
+Las pruebas pedidas en las indicaciones son:
+
+Crear una plaza válida aumenta el conteo:  `PlazasControllerTest.Post_PlazaValida_AumentaElConteoDeRegistros`
+
+Postulación sin usuario autenticado genera error: `PostulacionesControllerTest.Post_SinUsuarioAutenticado_RetornaUnauthorized` y `PostularAsync_SinIdDeCandidato_GeneraError`
+
+Un candidato no puede postularse dos veces: `PostulacionesControllerTest.Post_CandidatoSePostulaDosVecesALaMismaPlaza_RetornaConflict`
+
+Validación de fechas de publicación y cierre: `PlazasControllerTest.ValidarFechas_VerificaPublicacionYCierre`, `Post_FechaCierreAnteriorALaPublicacion_RetornaBadRequestYNoGuarda`, `Post_FechaPublicacionEnElPasado_RetornaBadRequest`, `PlazaDto_FechaCierreInvalida_GeneraErrorDeValidacion`
