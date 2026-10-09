@@ -1,0 +1,33 @@
+@model HojaDeVidaDto
+@{
+    ViewData["Title"] = "Hoja de vida - " + Model.NombreCandidato;
+    var idPlaza = ViewBag.IdPlaza as int?;
+}
+
+<h1 class="h3">Hoja de vida de @Model.NombreCandidato</h1>
+<p class="text-muted">@Model.EmailCandidato</p>
+
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.FormacionAcademica)</dt>
+    <dd class="col-sm-9" style="white-space: pre-line">@Model.FormacionAcademica</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.ExperienciaLaboral)</dt>
+    <dd class="col-sm-9" style="white-space: pre-line">@Model.ExperienciaLaboral</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Competencias)</dt>
+    <dd class="col-sm-9" style="white-space: pre-line">@Model.Competencias</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.ArchivoCV)</dt>
+    <dd class="col-sm-9">
+        @if (Model.TieneArchivo)
+        {
+            <a asp-action="Archivo" asp-route-id="@Model.IdCV" target="_blank">Ver PDF</a>
+        }
+        else
+        {
+            <span class="text-muted">Sin archivo</span>
+        }
+    </dd>
+</dl>
+
+@if (idPlaza.HasValue)
+{
+    <a asp-controller="Plazas" asp-action="Postulaciones" asp-route-id="@idPlaza" class="btn btn-secondary">Volver a las postulaciones</a>
+}

@@ -1,0 +1,20 @@
+@model PlazaDto
+@{
+    ViewData["Title"] = "Publicar plaza";
+}
+
+<h1 class="h3">Publicar plaza</h1>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" method="post">
+            <partial name="_FormPlaza" model="Model" />
+            <button type="submit" class="btn btn-primary">Publicar</button>
+            <a asp-action="MisPlazas" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

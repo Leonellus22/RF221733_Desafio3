@@ -1,0 +1,31 @@
+@model PlazaDto
+
+@* Campos compartidos por los formularios de creación y edición *@
+<div asp-validation-summary="All" class="text-danger"></div>
+<div class="mb-3">
+    <label asp-for="Titulo" class="form-label"></label>
+    <input asp-for="Titulo" class="form-control" />
+    <span asp-validation-for="Titulo" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Institucion" class="form-label"></label>
+    <input asp-for="Institucion" class="form-control" />
+    <span asp-validation-for="Institucion" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Descripcion" class="form-label"></label>
+    <textarea asp-for="Descripcion" class="form-control" rows="5"></textarea>
+    <span asp-validation-for="Descripcion" class="text-danger"></span>
+</div>
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label asp-for="FechaPublicacion" class="form-label"></label>
+        <input asp-for="FechaPublicacion" class="form-control" />
+        <span asp-validation-for="FechaPublicacion" class="text-danger"></span>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label asp-for="FechaCierre" class="form-label"></label>
+        <input asp-for="FechaCierre" class="form-control" />
+        <span asp-validation-for="FechaCierre" class="text-danger"></span>
+    </div>
+</div>

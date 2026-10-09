@@ -1,0 +1,21 @@
+@model PlazaDto
+@{
+    ViewData["Title"] = "Editar plaza";
+}
+
+<h1 class="h3">Editar plaza</h1>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="IdPlaza" />
+            <partial name="_FormPlaza" model="Model" />
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a asp-action="@(User.IsInRole(Roles.Administrador) ? "Todas" : "MisPlazas")" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

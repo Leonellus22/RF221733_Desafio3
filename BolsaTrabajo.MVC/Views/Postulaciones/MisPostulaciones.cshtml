@@ -1,0 +1,41 @@
+@model List<PostulacionDto>
+@{
+    ViewData["Title"] = "Mis postulaciones";
+}
+
+<h1 class="h3 mb-3">Mis postulaciones</h1>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Aún no se ha postulado a ninguna plaza. <a asp-controller="Home" asp-action="Index">Ver plazas disponibles</a>
+    </div>
+}
+else
+{
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Plaza</th>
+                <th>Institución</th>
+                <th>Fecha de postulación</th>
+                <th>Estado de la plaza</th>
+                <th>Estado de mi postulación</th>
+                <th>Observaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><a asp-controller="Plazas" asp-action="Details" asp-route-id="@item.IdPlaza">@item.TituloPlaza</a></td>
+                    <td>@item.Institucion</td>
+                    <td>@item.FechaPostulacion.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td><span class="badge @EstiloEstado.Clase(item.EstadoPlaza)">@item.EstadoPlaza.ObtenerNombre()</span></td>
+                    <td><span class="badge @EstiloEstado.Clase(item.Estado)">@item.Estado.ObtenerNombre()</span></td>
+                    <td>@item.Observaciones</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

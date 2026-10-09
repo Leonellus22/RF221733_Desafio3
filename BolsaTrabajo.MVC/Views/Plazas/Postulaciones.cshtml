@@ -1,0 +1,87 @@
+@model List<PostulacionDto>
+@{
+    var plaza = (PlazaDto)ViewBag.Plaza;
+    ViewData["Title"] = "Postulaciones - " + plaza.Titulo;
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="h3 mb-0">Postulaciones: @plaza.Titulo</h1>
+        <span class="text-muted">@plaza.Institucion · cierra @plaza.FechaCierre.ToString("dd/MM/yyyy")</span>
+        <span class="badge @EstiloEstado.Clase(plaza.Estado) ms-2">@plaza.Estado.ObtenerNombre()</span>
+    </div>
+    @if (plaza.Estado != EstadoPlaza.Cerrada)
+    {
+        <form asp-action="CambiarEstado" asp-route-id="@plaza.IdPlaza" method="post" class="d-flex">
+            <input type="hidden" name="volver" value="postulaciones" />
+            <select name="estado" class="form-select me-2">
+                @foreach (var estado in Enum.GetValues<EstadoPlaza>())
+                {
+                    <option value="@estado" selected="@(estado == plaza.Estado)">@estado.ObtenerNombre()</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-outline-secondary text-nowrap">Cambiar estado</button>
+        </form>
+    }
+</div>
+
+@if (plaza.Estado == EstadoPlaza.Cerrada)
+{
+    <div class="alert alert-secondary">El proceso de selección de esta plaza finalizó.</div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Todavía no hay postulaciones para esta plaza.</div>
+}
+else
+{
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Candidato</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Hoja de vida</th>
+                <th>Evaluación</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.NombreCandidato<br /><small class="text-muted">@item.EmailCandidato</small></td>
+                    <td>@item.FechaPostulacion.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        <span class="badge @EstiloEstado.Clase(item.Estado)">@item.Estado.ObtenerNombre()</span>
+                        @if (!string.IsNullOrEmpty(item.Observaciones))
+                        {
+                            <br /><small class="text-muted">@item.Observaciones</small>
+                        }
+                    </td>
+                    <td>
+                        <a asp-controller="HojaDeVida" asp-action="Candidato" asp-route-id="@item.IdCandidato" asp-route-idPlaza="@plaza.IdPlaza" class="btn btn-sm btn-outline-primary">Ver</a>
+                    </td>
+                    <td>
+                        @if (plaza.Estado != EstadoPlaza.Cerrada)
+                        {
+                            <form asp-controller="Postulaciones" asp-action="Evaluar" asp-route-id="@item.IdPostulacion" method="post" class="d-flex gap-1">
+                                <input type="hidden" name="idPlaza" value="@plaza.IdPlaza" />
+                                <select name="Estado" class="form-select form-select-sm" style="width:auto">
+                                    @foreach (var estado in Enum.GetValues<EstadoPostulacion>())
+                                    {
+                                        <option value="@estado" selected="@(estado == item.Estado)">@estado.ObtenerNombre()</option>
+                                    }
+                                </select>
+                                <input type="text" name="Observaciones" value="@item.Observaciones" maxlength="500" class="form-control form-control-sm" placeholder="Observaciones" />
+                                <button type="submit" class="btn btn-sm btn-primary">Guardar</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a asp-action="@(User.IsInRole(Roles.Administrador) ? "Todas" : "MisPlazas")" class="btn btn-secondary">Volver</a>

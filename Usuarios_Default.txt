@@ -1,0 +1,5 @@
+Usuarios default:
+
+Administrador - admin@bolsatrabajo.gob.sv - Admin123*
+Agente - agente@bolsatrabajo.gob.sv - Agente123*
+Candidato - candidato@bolsatrabajo.gob.sv - Candidato123*

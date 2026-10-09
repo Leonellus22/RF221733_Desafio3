@@ -1,0 +1,20 @@
+@model PlazaDto
+@{
+    ViewData["Title"] = "Eliminar plaza";
+}
+
+<h1 class="h3">Eliminar plaza</h1>
+<p class="text-danger">¿Está seguro de que desea eliminar esta plaza?</p>
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Titulo)</dt>
+    <dd class="col-sm-9">@Model.Titulo</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Institucion)</dt>
+    <dd class="col-sm-9">@Model.Institucion</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.TotalPostulaciones)</dt>
+    <dd class="col-sm-9">@Model.TotalPostulaciones</dd>
+</dl>
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="IdPlaza" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="@(User.IsInRole(Roles.Administrador) ? "Todas" : "MisPlazas")" class="btn btn-secondary">Cancelar</a>
+</form>

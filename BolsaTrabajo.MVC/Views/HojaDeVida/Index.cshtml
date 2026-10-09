@@ -1,0 +1,69 @@
+@model HojaDeVidaDto
+@{
+    ViewData["Title"] = "Mi hoja de vida";
+    var registrada = Model.IdCV > 0;
+}
+
+<h1 class="h3 mb-3">Mi hoja de vida</h1>
+@if (!registrada)
+{
+    <div class="alert alert-warning">Complete su hoja de vida para poder postularse a las plazas.</div>
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        <form asp-action="Index" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdCV" />
+            <div class="mb-3">
+                <label asp-for="FormacionAcademica" class="form-label"></label>
+                <textarea asp-for="FormacionAcademica" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="FormacionAcademica" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ExperienciaLaboral" class="form-label"></label>
+                <textarea asp-for="ExperienciaLaboral" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="ExperienciaLaboral" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Competencias" class="form-label"></label>
+                <textarea asp-for="Competencias" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Competencias" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar hoja de vida</button>
+        </form>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">Archivo CV (PDF)</div>
+            <div class="card-body">
+                @if (Model.TieneArchivo)
+                {
+                    <p><a asp-action="Archivo" asp-route-id="@Model.IdCV" target="_blank">Ver CV cargado</a></p>
+                }
+                else
+                {
+                    <p class="text-muted">No ha cargado ningún archivo.</p>
+                }
+
+                @if (registrada)
+                {
+                    <form asp-action="SubirArchivo" method="post" enctype="multipart/form-data">
+                        <input type="file" name="archivo" accept=".pdf,application/pdf" class="form-control mb-2" required />
+                        <div class="form-text mb-2">Solo PDF, máximo 5 MB.</div>
+                        <button type="submit" class="btn btn-outline-primary w-100">Subir archivo</button>
+                    </form>
+                }
+                else
+                {
+                    <p class="small text-muted mb-0">Primero guarde los datos de su hoja de vida.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

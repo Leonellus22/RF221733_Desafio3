@@ -1,0 +1,77 @@
+@model List<PlazaDto>
+@{
+    ViewData["Title"] = ViewBag.Titulo;
+    var esAdmin = User.IsInRole(Roles.Administrador);
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3">@ViewBag.Titulo</h1>
+    @if (User.IsInRole(Roles.Agente))
+    {
+        <a asp-action="Create" class="btn btn-primary">Publicar plaza</a>
+    }
+    @if (esAdmin)
+    {
+        <form asp-action="Todas" method="get" class="d-flex">
+            <select name="estado" class="form-select me-2" asp-items="Html.GetEnumSelectList<EstadoPlaza>()">
+                <option value="">Todos los estados</option>
+            </select>
+            <button type="submit" class="btn btn-outline-primary">Filtrar</button>
+        </form>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No hay plazas registradas.</div>
+}
+else
+{
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Institución</th>
+                @if (esAdmin) { <th>Agente</th> }
+                <th>Publicación</th>
+                <th>Cierre</th>
+                <th>Estado</th>
+                <th>Postulaciones</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Titulo</td>
+                    <td>@item.Institucion</td>
+                    @if (esAdmin) { <td>@item.NombreAgente</td> }
+                    <td>@item.FechaPublicacion.ToString("dd/MM/yyyy")</td>
+                    <td>@item.FechaCierre.ToString("dd/MM/yyyy")</td>
+                    <td><span class="badge @EstiloEstado.Clase(item.Estado)">@item.Estado.ObtenerNombre()</span></td>
+                    <td>
+                        <a asp-action="Postulaciones" asp-route-id="@item.IdPlaza" class="btn btn-sm btn-outline-primary">@item.TotalPostulaciones ver</a>
+                    </td>
+                    <td class="text-nowrap">
+                        @if (item.Estado != EstadoPlaza.Cerrada)
+                        {
+                            @* Cambio de estado del proceso de selección *@
+                            <form asp-action="CambiarEstado" asp-route-id="@item.IdPlaza" method="post" class="d-inline-flex">
+                                <select name="estado" class="form-select form-select-sm me-1" style="width:auto">
+                                    @foreach (var estado in Enum.GetValues<EstadoPlaza>())
+                                    {
+                                        <option value="@estado" selected="@(estado == item.Estado)">@estado.ObtenerNombre()</option>
+                                    }
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-outline-secondary me-1">Cambiar</button>
+                            </form>
+                            <a asp-action="Edit" asp-route-id="@item.IdPlaza" class="btn btn-sm btn-outline-primary">Editar</a>
+                        }
+                        <a asp-action="Delete" asp-route-id="@item.IdPlaza" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

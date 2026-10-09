@@ -1,0 +1,36 @@
+@model List<PlazaDto>
+@{
+    ViewData["Title"] = "Plazas disponibles";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+    <h1 class="h3">Plazas disponibles</h1>
+    <form asp-action="Index" method="get" class="d-flex">
+        <input type="text" name="buscar" value="@ViewBag.Buscar" class="form-control me-2" placeholder="Buscar por título o institución" />
+        <button type="submit" class="btn btn-outline-primary">Buscar</button>
+    </form>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No hay plazas disponibles en este momento.</div>
+}
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Titulo</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@item.Institucion</h6>
+                    <p class="card-text">@(item.Descripcion.Length > 140 ? item.Descripcion[..140] + "..." : item.Descripcion)</p>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Cierra: @item.FechaCierre.ToString("dd/MM/yyyy")</small>
+                    <a asp-controller="Plazas" asp-action="Details" asp-route-id="@item.IdPlaza" class="btn btn-sm btn-primary">Ver detalle</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

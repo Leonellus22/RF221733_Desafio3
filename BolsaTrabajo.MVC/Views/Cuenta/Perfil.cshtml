@@ -1,0 +1,35 @@
+@model ActualizarPerfilDto
+@{
+    ViewData["Title"] = "Mi perfil";
+    var usuario = ViewBag.Usuario as UsuarioDto;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h1 class="h3 mb-3">Mi perfil</h1>
+        <dl class="row">
+            <dt class="col-sm-4">Correo</dt>
+            <dd class="col-sm-8">@usuario?.Email</dd>
+            <dt class="col-sm-4">Rol</dt>
+            <dd class="col-sm-8">@usuario?.Rol</dd>
+        </dl>
+        <form asp-action="Perfil" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="NombreCompleto" class="form-label"></label>
+                <input asp-for="NombreCompleto" class="form-control" />
+                <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Telefono" class="form-label"></label>
+                <input asp-for="Telefono" class="form-control" placeholder="0000-0000" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

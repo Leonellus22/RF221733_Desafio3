@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\BolsaTrabajo.Common\BolsaTrabajo.Common.csproj" />
+    <ProjectReference Include="..\BolsaTrabajo.Entities\BolsaTrabajo.Entities.csproj" />
+    <ProjectReference Include="..\BolsaTrabajo.DAL\BolsaTrabajo.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
